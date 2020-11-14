@@ -6,15 +6,20 @@ import {
 } from './../types/index';
 import { firebase } from '../../firebase';
 const auth = firebase.auth();
+const firestore = firebase.firestore();
 
 export const authenticate = (email, password) => async (dispatch) => {
   dispatch({ type: AUTH_LOGIN });
   try {
     const authenticate = await auth.signInWithEmailAndPassword(email, password);
     if (authenticate.user) {
+      const token = await auth.currentUser.getIdToken();
+      const FBIdToken = `Bearer ${token}`;
+      localStorage.setItem('FBIdToken', FBIdToken);
+      const user = await getUserDetails(authenticate.user.uid)();
       dispatch({
         type: AUTH_LOGGEDIN,
-        payload: { email: authenticate.user.email, uid: authenticate.user.uid },
+        payload: user,
       });
     }
   } catch (e) {
@@ -25,11 +30,19 @@ export const authenticate = (email, password) => async (dispatch) => {
 export const logout = () => async (dispatch) => {
   await auth.signOut();
   dispatch({ type: AUTH_LOGOUT });
+  localStorage.removeItem('FBIdToken');
 };
 
-export const setAuth = ({ email, uid }) => (dispatch) => {
+export const setAuth = (user) => async (dispatch) => {
   dispatch({
     type: AUTH_LOGGEDIN,
-    payload: { email, uid },
+    payload: user,
+  });
+};
+
+export const getUserDetails = (uid) => () => {
+  return new Promise(async (resolve) => {
+    const userSnapShot = await firestore.collection('users').doc(uid).get();
+    resolve(userSnapShot.data());
   });
 };

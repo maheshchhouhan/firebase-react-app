@@ -5,13 +5,13 @@ import {
   AUTH_LOGOUT,
 } from '../types';
 
-const initState = {
+const initialState = {
   loading: false,
   user: null,
   authError: null,
 };
 
-const AuthReducer = (state = initState, action) => {
+const AuthReducer = (state = initialState, action) => {
   switch (action.type) {
     case AUTH_LOGIN:
       return {

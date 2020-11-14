@@ -6,6 +6,7 @@ import ProtectedRoute from './ProtectedRoute';
 import Container from 'react-bootstrap/Container';
 import { setAuth } from './redux/actions/index';
 import Loader from './components/Loader/index';
+import NotFound from './components/NotFound';
 
 const Header = lazy(() => import('./components/Header'));
 const Login = lazy(() => import('./components/Login'));
@@ -17,8 +18,7 @@ const App = () => {
 
   useEffect(() => {
     if (currentUser) {
-      const { email, uid } = currentUser;
-      reduxDispatch(setAuth({ email, uid }));
+      reduxDispatch(setAuth(currentUser));
     }
   }, [currentUser, reduxDispatch]);
 
@@ -31,6 +31,7 @@ const App = () => {
             <Switch>
               <Route path='/' exact component={Login} />
               <ProtectedRoute exact path='/orders' component={Orders} />
+              <Route component={NotFound} />
             </Switch>
           ) : (
             <Loader />

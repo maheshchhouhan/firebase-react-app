@@ -1,5 +1,6 @@
 import { useDispatch, useSelector } from 'react-redux';
 import Navbar from 'react-bootstrap/Navbar';
+import NavDropdown from 'react-bootstrap/NavDropdown';
 import Nav from 'react-bootstrap/Nav';
 import Button from 'react-bootstrap/Nav';
 import { Link } from 'react-router-dom';
@@ -33,16 +34,22 @@ const Headbar = () => {
             </Link>
           ) : (
             <>
-              <Link className='nav-link' to='/orders'>
-                Orders
-              </Link>
-              <Button
-                className='nav-link'
-                style={{ cursor: 'pointer' }}
-                onClick={handleLogout}
-              >
-                Logout
-              </Button>
+              <NavDropdown title={user.name} id='collasible-nav-dropdown'>
+                <Link className='nav-link' to='/orders'>
+                  Orders
+                </Link>
+
+                <NavDropdown.Divider />
+                <Button
+                  className='nav-link'
+                  style={{ cursor: 'pointer' }}
+                  onClick={handleLogout}
+                >
+                  Logout
+                </Button>
+              </NavDropdown>
+
+              {/* <span>Hi , </span> */}
             </>
           )}
         </Nav>
