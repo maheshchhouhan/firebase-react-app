@@ -1,3 +1,7 @@
+import { useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { useHistory } from 'react-router-dom';
+
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
@@ -8,17 +12,26 @@ import Container from 'react-bootstrap/Container';
 import useForm from './../../hooks/useForm';
 import { validateEmail } from '../../utils';
 
+import { authenticate } from './../../redux/actions/index';
+
 const initialState = {
   email: '',
   password: '',
   error: '',
-  loading: '',
 };
 
 const Login = () => {
+  const history = useHistory();
+  const reduxDispatch = useDispatch();
+  const { authError, loading, user } = useSelector((state) => state.auth);
+
   const { state, dispatch, handleChange } = useForm(initialState);
 
-  const { email, password, error, loading } = state;
+  const { email, password, error } = state;
+
+  useEffect(() => {
+    if (user) history.push('/orders');
+  }, [user, history]);
 
   const handleValidation = () => {
     return new Promise((resolve, reject) => {
@@ -26,18 +39,19 @@ const Login = () => {
       if (email.trim() === '') {
         errors.push(`Email is required`);
       }
+      if (email && !validateEmail(email)) {
+        errors.push(`Please enter valid email address`);
+      }
       if (password.trim() === '') {
         errors.push(`Password is required`);
       }
-      if (!validateEmail(email)) {
-        errors.push(`Please enter valid email address`);
-      }
+
       if (!errors.length) {
         dispatch({
           type: 'SET_STATE',
           payload: { name: 'error', value: '' },
         });
-        resolve();
+        resolve(true);
       } else {
         reject({ msg: errors.join('<br/>') });
       }
@@ -48,8 +62,10 @@ const Login = () => {
     e.preventDefault();
     try {
       const validate = await handleValidation();
+
       if (validate) {
         // login with firebase
+        reduxDispatch(authenticate(email, password));
       }
     } catch (e) {
       if (e.msg) {
@@ -69,11 +85,14 @@ const Login = () => {
       <Card className='w-100' style={{ maxWidth: '400px' }}>
         <Card.Body>
           <h2 className='text-center mb-4'>Log In</h2>
-          {error && (
+          {(error || authError) && (
             <Alert variant='danger'>
-              <div dangerouslySetInnerHTML={{ __html: error }}></div>
+              <div
+                dangerouslySetInnerHTML={{ __html: error ? error : authError }}
+              ></div>
             </Alert>
           )}
+
           <Form onSubmit={handleSubmit}>
             <Form.Group id='email'>
               <Form.Label>Email</Form.Label>
