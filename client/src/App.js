@@ -1,25 +1,33 @@
-import logo from './logo.svg';
-import './App.css';
+import { Suspense, lazy } from 'react';
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 
-function App() {
+import Container from 'react-bootstrap/Container';
+
+const Header = lazy(() => import('./components/Header'));
+const Login = lazy(() => import('./components/Login'));
+const Orders = lazy(() => import('./components/Orders'));
+
+const App = () => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Suspense
+      fallback={
+        <div className='d-flex align-items-center justify-content-center w-100'>
+          Loading...
+        </div>
+      }
+    >
+      <Container>
+        <Router>
+          <Header />
+          <Switch>
+            <Route path='/' exact component={Login} />
+            <Route path='/orders' exact component={Orders} />
+            {/* <ProtectedRoute exact path="/orders" component={Orders} />               */}
+          </Switch>
+        </Router>
+      </Container>
+    </Suspense>
   );
-}
+};
 
 export default App;
