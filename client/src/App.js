@@ -4,7 +4,7 @@ import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import useAuth from './hooks/useAuth';
 import ProtectedRoute from './ProtectedRoute';
 import Container from 'react-bootstrap/Container';
-import { setAuth } from './redux/actions/index';
+import { setAuth } from './redux/actions/authActions';
 import Loader from './components/Loader/index';
 import NotFound from './components/NotFound';
 

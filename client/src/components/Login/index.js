@@ -12,7 +12,7 @@ import Container from 'react-bootstrap/Container';
 import useForm from './../../hooks/useForm';
 import { validateEmail } from '../../utils';
 
-import { authenticate } from './../../redux/actions/index';
+import { authenticate } from './../../redux/actions/authActions';
 
 const initialState = {
   email: '',

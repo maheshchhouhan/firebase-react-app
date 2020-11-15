@@ -3,8 +3,9 @@ import {
   AUTH_LOGIN,
   AUTH_LOGIN_ERROR,
   AUTH_LOGOUT,
-} from './../types/index';
+} from '../types/index';
 import { firebase } from '../../firebase';
+import { setToken } from '../../utils';
 const auth = firebase.auth();
 const firestore = firebase.firestore();
 
@@ -14,8 +15,7 @@ export const authenticate = (email, password) => async (dispatch) => {
     const authenticate = await auth.signInWithEmailAndPassword(email, password);
     if (authenticate.user) {
       const token = await auth.currentUser.getIdToken();
-      const FBIdToken = `Bearer ${token}`;
-      localStorage.setItem('FBIdToken', FBIdToken);
+      setToken(token);
       const user = await getUserDetails(authenticate.user.uid)();
       dispatch({
         type: AUTH_LOGGEDIN,

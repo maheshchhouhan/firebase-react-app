@@ -6,7 +6,7 @@ import Button from 'react-bootstrap/Nav';
 import { Link } from 'react-router-dom';
 
 import logo from '../../logo.png';
-import { logout } from '../../redux/actions';
+import { logout } from '../../redux/actions/authActions';
 
 const Headbar = () => {
   const { user } = useSelector((state) => state.auth);
