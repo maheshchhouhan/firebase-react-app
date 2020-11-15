@@ -28,11 +28,7 @@ const Headbar = () => {
         </Link>
 
         <Nav>
-          {!user ? (
-            <Link className='nav-link' to='/'>
-              Login
-            </Link>
-          ) : (
+          {user && (
             <>
               <NavDropdown title={user.name} id='collasible-nav-dropdown'>
                 <Link className='nav-link' to='/orders'>
