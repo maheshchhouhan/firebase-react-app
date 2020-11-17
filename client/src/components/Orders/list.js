@@ -4,7 +4,7 @@ import Tooltip from 'react-bootstrap/Tooltip';
 
 import editIcon from '../../edit-icon.svg';
 
-const List = ({ order, editOrder }) => {
+const List = ({ order, onEdit }) => {
   const renderTooltip = (props) => (
     <Tooltip id='button-tooltip' {...props}>
       Edit Order
@@ -13,7 +13,6 @@ const List = ({ order, editOrder }) => {
 
   return (
     <tr key={order._id}>
-      <td>1</td>
       <td>{order.title}</td>
       <td>{order.customer ? order.customer.name : 'N/A'}</td>
       <td>
@@ -21,12 +20,8 @@ const List = ({ order, editOrder }) => {
           ? `${order.address.street} ${order.address.city} ${order.address.country} ${order.address.zip}`
           : 'N/A'}
       </td>
-      <td>
-        {typeof order.bookingDate === 'string'
-          ? order.bookingDate
-          : order.bookingDate._seconds
-          ? moment(order.bookingDate._seconds).format('m/d/Y')
-          : moment(order.bookingDate).format('m/d/Y')}
+      <td className={order.bookingDate._seconds}>
+        {moment.unix(order.bookingDate._seconds).format('MM/DD/YYYY')}
       </td>
       <td>
         <OverlayTrigger
@@ -35,10 +30,10 @@ const List = ({ order, editOrder }) => {
           overlay={renderTooltip}
         >
           <img
-            onClick={() => editOrder(order._id)}
+            onClick={() => onEdit(order._id)}
             src={editIcon}
             alt='edit-icon'
-            style={{ maxWidth: 30, cursor: 'pointer' }}
+            style={{ maxWidth: 25, cursor: 'pointer' }}
           />
         </OverlayTrigger>
         ,

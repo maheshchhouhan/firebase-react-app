@@ -1,9 +1,20 @@
-import { ORDERS_LOADING, ORDERS_LOADED, ORDERS_ERROR } from '../types';
+import {
+  ORDERS_LOADING,
+  ORDERS_LOADED,
+  ORDER_LOADED,
+  ORDERS_ERROR,
+  ORDER_CREATING,
+  ORDER_CREATED,
+  ORDER_UPDATING,
+  ORDER_UPDATED,
+} from '../types';
 
 const initialState = {
   loading: false,
+  manageOrderLoading: false,
   data: [],
   error: null,
+  order: {},
 };
 
 const OrderReducer = (state = initialState, action) => {
@@ -20,6 +31,12 @@ const OrderReducer = (state = initialState, action) => {
         loading: false,
         data: action.payload,
       };
+    case ORDER_LOADED:
+      console.log('payload: ', action.payload);
+      return {
+        ...state,
+        order: action.payload,
+      };
     case ORDERS_ERROR:
       return {
         ...state,
@@ -27,7 +44,26 @@ const OrderReducer = (state = initialState, action) => {
         error: action.payload,
         data: [],
       };
-
+    case ORDER_CREATING:
+      return {
+        ...state,
+        manageOrderLoading: true,
+      };
+    case ORDER_CREATED:
+      return {
+        ...state,
+        manageOrderLoading: false,
+      };
+    case ORDER_UPDATING:
+      return {
+        ...state,
+        manageOrderLoading: true,
+      };
+    case ORDER_UPDATED:
+      return {
+        ...state,
+        manageOrderLoading: false,
+      };
     default:
       return state;
   }

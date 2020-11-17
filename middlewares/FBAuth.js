@@ -13,7 +13,6 @@ module.exports = async (req, res, next) => {
   }
   try {
     const decodedToken = await admin.auth().verifyIdToken(idToken);
-    console.log({ decodedToken });
     return next();
   } catch (err) {
     console.error('Error while verifying token ', err);

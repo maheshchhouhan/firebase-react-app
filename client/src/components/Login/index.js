@@ -6,6 +6,7 @@ import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 import Alert from 'react-bootstrap/Alert';
+import Spinner from 'react-bootstrap/Spinner';
 
 import Container from 'react-bootstrap/Container';
 
@@ -24,9 +25,7 @@ const Login = () => {
   const history = useHistory();
   const reduxDispatch = useDispatch();
   const { authError, loading, user } = useSelector((state) => state.auth);
-
   const { state, dispatch, handleChange } = useForm(initialState);
-
   const { email, password, error } = state;
 
   useEffect(() => {
@@ -39,7 +38,7 @@ const Login = () => {
       if (email.trim() === '') {
         errors.push(`Email is required`);
       }
-      if (email && !validateEmail(email)) {
+      if (email.trim() && !validateEmail(email)) {
         errors.push(`Please enter valid email address`);
       }
       if (password.trim() === '') {
@@ -112,9 +111,22 @@ const Login = () => {
                 onChange={handleChange}
               />
             </Form.Group>
-            <Button disabled={loading} className='w-100' type='submit'>
-              Log In
-            </Button>
+            {loading ? (
+              <Button variant='primary' className='w-100' disabled>
+                <Spinner
+                  as='span'
+                  animation='grow'
+                  size='sm'
+                  role='status'
+                  aria-hidden='true'
+                />
+                Loading...
+              </Button>
+            ) : (
+              <Button className='w-100' type='submit'>
+                Log In
+              </Button>
+            )}
           </Form>
         </Card.Body>
       </Card>

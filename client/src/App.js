@@ -7,6 +7,8 @@ import Container from 'react-bootstrap/Container';
 import { setAuth } from './redux/actions/authActions';
 import Loader from './components/Loader/index';
 import NotFound from './components/NotFound';
+import { NotificationContainer } from 'react-notifications';
+import 'react-notifications/lib/notifications.css';
 
 const Header = lazy(() => import('./components/Header'));
 const Login = lazy(() => import('./components/Login'));
@@ -23,22 +25,25 @@ const App = () => {
   }, [currentUser, reduxDispatch]);
 
   return (
-    <Suspense fallback={<Loader />}>
-      <Container>
-        <Router>
-          <Header />
-          {!loading ? (
-            <Switch>
-              <Route path='/' exact component={Login} />
-              <ProtectedRoute exact path='/orders' component={Orders} />
-              <Route component={NotFound} />
-            </Switch>
-          ) : (
-            <Loader />
-          )}
-        </Router>
-      </Container>
-    </Suspense>
+    <>
+      <Suspense fallback={<Loader />}>
+        <Container>
+          <Router>
+            <Header />
+            {!loading ? (
+              <Switch>
+                <Route path='/' exact component={Login} />
+                <ProtectedRoute exact path='/orders' component={Orders} />
+                <Route component={NotFound} />
+              </Switch>
+            ) : (
+              <Loader />
+            )}
+          </Router>
+        </Container>
+      </Suspense>
+      <NotificationContainer />
+    </>
   );
 };
 
