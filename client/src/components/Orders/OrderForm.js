@@ -23,6 +23,7 @@ const initalState = {
 };
 
 const OrderForm = ({ show, onPopup, onSubmit, order }) => {
+  // Using useForm custom hook to manage local component form state throughout our application
   const { state, handleChange, dispatch } = useForm(initalState);
   const [validated, setValidated] = useState(false);
   const {

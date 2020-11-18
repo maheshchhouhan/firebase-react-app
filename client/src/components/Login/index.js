@@ -9,10 +9,8 @@ import Alert from 'react-bootstrap/Alert';
 import Spinner from 'react-bootstrap/Spinner';
 
 import Container from 'react-bootstrap/Container';
-
 import useForm from './../../hooks/useForm';
 import { validateEmail } from '../../utils';
-
 import { authenticate } from './../../redux/actions/authActions';
 
 const initialState = {
@@ -25,14 +23,17 @@ const Login = () => {
   const history = useHistory();
   const reduxDispatch = useDispatch();
   const { authError, loading, user } = useSelector((state) => state.auth);
+  // Using useForm custom hook to manage local component form state throughout our application
   const { state, dispatch, handleChange } = useForm(initialState);
   const { email, password, error } = state;
 
   useEffect(() => {
+    // Checking if user is available in redux then redirect to orders page
     if (user) history.push('/orders');
   }, [user, history]);
 
   const handleValidation = () => {
+    // Returning promise custom validation to validate email and password fields
     return new Promise((resolve, reject) => {
       const errors = [];
       if (email.trim() === '') {
@@ -61,9 +62,8 @@ const Login = () => {
     e.preventDefault();
     try {
       const validate = await handleValidation();
-
       if (validate) {
-        // login with firebase
+        // Dispatching redux authenticate fn if form get validated
         reduxDispatch(authenticate(email, password));
       }
     } catch (e) {

@@ -4,15 +4,14 @@ import NavDropdown from 'react-bootstrap/NavDropdown';
 import Nav from 'react-bootstrap/Nav';
 import Button from 'react-bootstrap/Nav';
 import { Link } from 'react-router-dom';
-
 import logo from '../../logo.png';
 import { logout } from '../../redux/actions/authActions';
 
-const Headbar = () => {
+const Header = () => {
   const { user } = useSelector((state) => state.auth);
-
   const reduxDispatch = useDispatch();
 
+  // To logout current logged in firebase user
   const handleLogout = () => {
     reduxDispatch(logout());
   };
@@ -44,8 +43,6 @@ const Headbar = () => {
                   Logout
                 </Button>
               </NavDropdown>
-
-              {/* <span>Hi , </span> */}
             </>
           )}
         </Nav>
@@ -55,4 +52,4 @@ const Headbar = () => {
   );
 };
 
-export default Headbar;
+export default Header;

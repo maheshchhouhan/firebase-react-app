@@ -10,15 +10,18 @@ import NotFound from './components/NotFound';
 import { NotificationContainer } from 'react-notifications';
 import 'react-notifications/lib/notifications.css';
 
+// Loading all components lazy loading so that we can eliminate all components to load at once, This will reducer our bundle main.js file and speed up app to load initial page fast.
 const Header = lazy(() => import('./components/Header'));
 const Login = lazy(() => import('./components/Login'));
 const Orders = lazy(() => import('./components/Orders'));
 
 const App = () => {
+  // Using  useAuth custom hook to authenticate firebase users on page load
   const { currentUser, loading } = useAuth();
   const reduxDispatch = useDispatch();
 
   useEffect(() => {
+    // Checking if currentUser is available from useAuth hook and saving it to redux store
     if (currentUser) {
       reduxDispatch(setAuth(currentUser));
     }

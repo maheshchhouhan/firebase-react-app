@@ -12,6 +12,7 @@ import axios from 'axios';
 import { getToken } from './../../utils/index';
 import { logout } from './authActions';
 
+// Fn to fetch all orders using token which is stored in localStorage
 export const getOrders = () => async (dispatch) => {
   dispatch({ type: ORDERS_LOADING });
   try {
@@ -35,6 +36,7 @@ export const getOrders = () => async (dispatch) => {
   }
 };
 
+// Fn to getch selected orderId order details
 export const getOrder = (orderId) => async (dispatch) => {
   try {
     const token = getToken();
@@ -54,6 +56,7 @@ export const getOrder = (orderId) => async (dispatch) => {
   }
 };
 
+// Fn to create new order
 export const createOrder = (data, cb) => async (dispatch) => {
   dispatch({ type: ORDER_CREATING });
   try {
@@ -69,6 +72,7 @@ export const createOrder = (data, cb) => async (dispatch) => {
   }
 };
 
+// Fn to update order
 export const updateOrder = (data, cb) => async (dispatch) => {
   dispatch({ type: ORDER_UPDATING });
   try {

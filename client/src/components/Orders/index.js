@@ -24,6 +24,7 @@ const Orders = () => {
   );
 
   useEffect(() => {
+    // Checking if orders is empty then dispatching and fetching orders from backend api, otherwise not calling unnecessary api requests
     if (!orders.length) reduxDispatch(getOrders());
   }, [reduxDispatch, orders.length]);
 
@@ -32,6 +33,7 @@ const Orders = () => {
   }, [error]);
 
   const editOrder = (orderId) => {
+    // Dispatching getOrder fn to fetch order details of selected orderId
     reduxDispatch(getOrder(orderId));
   };
 

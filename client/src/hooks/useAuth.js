@@ -9,6 +9,7 @@ const useAuth = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    // Authenticating user on componentDidMount and setting current user to local state
     const unsubscribe = auth.onAuthStateChanged(async (user) => {
       if (user) {
         const userSnapShot = await firestore
@@ -20,7 +21,7 @@ const useAuth = () => {
 
       setLoading(false);
     });
-
+    // Unsubscribing from firebase auth on componentWillUnmount
     return unsubscribe;
   }, []);
 
