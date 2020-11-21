@@ -4,13 +4,14 @@ import Col from 'react-bootstrap/Col';
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
+import Spinner from 'react-bootstrap/Spinner';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import useForm from '../../hooks/useForm';
 import moment from 'moment';
+import { useSelector } from 'react-redux';
 
 const initalState = {
-  _id: '',
   title: '',
   bookingDate: new Date(),
   city: '',
@@ -26,8 +27,8 @@ const OrderForm = ({ show, onPopup, onSubmit, order }) => {
   // Using useForm custom hook to manage local component form state throughout our application
   const { state, handleChange, dispatch } = useForm(initalState);
   const [validated, setValidated] = useState(false);
+  const { manageOrderLoading } = useSelector((state) => state.orders);
   const {
-    _id,
     title,
     bookingDate,
     city,
@@ -78,7 +79,7 @@ const OrderForm = ({ show, onPopup, onSubmit, order }) => {
     <Modal show={show} onHide={onPopup}>
       <Form noValidate validated={validated} onSubmit={handleValidate}>
         <Modal.Header closeButton>
-          <Modal.Title>{!_id ? 'Add' : 'Edit'} Order</Modal.Title>
+          <Modal.Title>{!order._id ? 'Add' : 'Edit'} Order</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Form.Group as={Row}>
@@ -125,7 +126,7 @@ const OrderForm = ({ show, onPopup, onSubmit, order }) => {
             <Col sm='8'>
               <Form.Control
                 required
-                readOnly={_id}
+                readOnly={order._id}
                 type='text'
                 name='street'
                 onChange={handleChange}
@@ -145,7 +146,7 @@ const OrderForm = ({ show, onPopup, onSubmit, order }) => {
               <Form.Control
                 required
                 type='text'
-                readOnly={_id}
+                readOnly={order._id}
                 name='city'
                 onChange={handleChange}
                 value={city}
@@ -165,7 +166,7 @@ const OrderForm = ({ show, onPopup, onSubmit, order }) => {
               <Form.Control
                 required
                 type='text'
-                readOnly={_id}
+                readOnly={order._id}
                 name='country'
                 onChange={handleChange}
                 value={country}
@@ -184,7 +185,7 @@ const OrderForm = ({ show, onPopup, onSubmit, order }) => {
               <Form.Control
                 required
                 type='text'
-                readOnly={_id}
+                readOnly={order._id}
                 name='zip'
                 onChange={handleChange}
                 value={zip}
@@ -203,7 +204,7 @@ const OrderForm = ({ show, onPopup, onSubmit, order }) => {
               <Form.Control
                 required
                 type='text'
-                readOnly={_id}
+                readOnly={order._id}
                 name='name'
                 onChange={handleChange}
                 value={name}
@@ -222,7 +223,7 @@ const OrderForm = ({ show, onPopup, onSubmit, order }) => {
               <Form.Control
                 required
                 type='email'
-                readOnly={_id}
+                readOnly={order._id}
                 name='email'
                 onChange={handleChange}
                 value={email}
@@ -241,7 +242,7 @@ const OrderForm = ({ show, onPopup, onSubmit, order }) => {
               <Form.Control
                 required
                 type='text'
-                readOnly={_id}
+                readOnly={order._id}
                 name='phone'
                 onChange={handleChange}
                 value={phone}
@@ -257,9 +258,22 @@ const OrderForm = ({ show, onPopup, onSubmit, order }) => {
           <Button variant='secondary' onClick={onPopup}>
             Close
           </Button>
-          <Button variant='success' type='submit'>
-            {!_id ? 'Add' : 'Update'}
-          </Button>
+          {manageOrderLoading ? (
+            <Button variant='success' disabled>
+              <Spinner
+                as='span'
+                animation='grow'
+                size='sm'
+                role='status'
+                aria-hidden='true'
+              />
+              {!order._id ? 'Adding' : 'Updating'}...
+            </Button>
+          ) : (
+            <Button variant='success' type='submit'>
+              {!order._id ? 'Add' : 'Update'}
+            </Button>
+          )}
         </Modal.Footer>
       </Form>
     </Modal>

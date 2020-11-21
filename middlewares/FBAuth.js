@@ -15,7 +15,7 @@ module.exports = async (req, res, next) => {
     const decodedToken = await admin.auth().verifyIdToken(idToken);
     return next();
   } catch (err) {
-    console.error('Error while verifying token ', err);
+    // console.error('Error while verifying token ', err);
     return res.status(403).json(err);
   }
 };

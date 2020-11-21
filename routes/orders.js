@@ -15,7 +15,7 @@ router.get('/:orderId', FBAuth, getOrder);
 
 router.post('/', FBAuth, createOrder);
 
-router.put('/', FBAuth, updateOrder);
+router.put('/:orderId', FBAuth, updateOrder);
 
 module.exports = {
   routes: router,

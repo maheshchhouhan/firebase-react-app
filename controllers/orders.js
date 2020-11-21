@@ -8,7 +8,7 @@ const getOrders = functions.https.onRequest(async (req, res) => {
     const orders = await admin
       .firestore()
       .collection('orders')
-      .orderBy('title', 'asc')
+      .orderBy('bookingDate', 'desc')
       .get();
     const orderData = [];
     orders.forEach((order) => {
@@ -76,7 +76,6 @@ const createOrder = functions.https.onRequest(async (req, res) => {
     if (req.method !== 'POST') {
       return res.status(400).json({ error: 'Method not allowed' });
     }
-    delete req.body._id;
     const {
       title,
       bookingDate,
@@ -88,6 +87,7 @@ const createOrder = functions.https.onRequest(async (req, res) => {
       name,
       phone,
     } = req.body;
+
     const newOrder = {
       title,
       bookingDate,
@@ -116,8 +116,7 @@ const updateOrder = functions.https.onRequest(async (req, res) => {
     if (req.method !== 'PUT') {
       return res.status(400).json({ error: 'Method not allowed' });
     }
-    const orderId = req.body._id;
-    delete req.body._id;
+    const { orderId } = req.params;
     const { title, bookingDate } = req.body;
     const updateOrder = {
       ...req.body,

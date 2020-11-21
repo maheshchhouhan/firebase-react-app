@@ -73,12 +73,12 @@ export const createOrder = (data, cb) => async (dispatch) => {
 };
 
 // Fn to update order
-export const updateOrder = (data, cb) => async (dispatch) => {
+export const updateOrder = (data, orderId, cb) => async (dispatch) => {
   dispatch({ type: ORDER_UPDATING });
   try {
     const token = getToken();
     axios.defaults.headers.common['Authorization'] = token;
-    await axios.put('/orders', data);
+    await axios.put(`/orders/${orderId}`, data);
     dispatch({ type: ORDER_UPDATED });
     cb();
   } catch (e) {

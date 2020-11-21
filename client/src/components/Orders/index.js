@@ -38,8 +38,9 @@ const Orders = () => {
   };
 
   const putOrder = (data) => {
+    if (!order._id) return;
     reduxDispatch(
-      updateOrder(data, () => {
+      updateOrder(data, order._id, () => {
         NotificationManager.success('Order updated successfully');
         handlePopup();
         reduxDispatch(getOrders());
