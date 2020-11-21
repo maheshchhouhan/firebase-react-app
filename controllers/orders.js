@@ -119,21 +119,14 @@ const updateOrder = functions.https.onRequest(async (req, res) => {
     const { orderId } = req.params;
     const { title, bookingDate } = req.body;
     const updateOrder = {
-      ...req.body,
       title,
       bookingDate: admin.firestore.Timestamp.fromDate(new Date(bookingDate)),
     };
-    // console.log({
-    //   ...req.body,
-    //   title,
-    //   bookingDate: admin.firestore.Timestamp.fromDate(new Date(bookingDate)),
-    // });
-
     await admin
       .firestore()
       .collection('orders')
       .doc(orderId)
-      .set({ ...updateOrder });
+      .update(updateOrder);
     res.status(200).json({ msg: 'Order updated successfully' });
   } catch (e) {
     return res.status(400).json({ msg: e.message });
