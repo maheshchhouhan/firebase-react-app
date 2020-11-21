@@ -53,6 +53,7 @@ const OrderReducer = (state = initialState, action) => {
       return {
         ...state,
         manageOrderLoading: false,
+        order: {},
       };
     case ORDER_UPDATING:
       return {
@@ -63,6 +64,7 @@ const OrderReducer = (state = initialState, action) => {
       return {
         ...state,
         manageOrderLoading: false,
+        order: {},
       };
     default:
       return state;

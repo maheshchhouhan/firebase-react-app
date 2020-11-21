@@ -59,7 +59,7 @@ const Orders = () => {
   };
 
   const handleSubmit = (data) => {
-    if (!data._id) {
+    if (!order._id) {
       addOrder(data);
     } else {
       putOrder(data);
